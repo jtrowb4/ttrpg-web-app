@@ -12,17 +12,22 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 //initial app set up
 const app = express();
-const port = chalk.green('3000');
+const port = process.env.PORT;
 const logger = debug('app');
 
 app.use(morgan('tiny'));
 app.use(express.static(path.join(__dirname, '/public/')));
 
+//initial setter
+app.set('views', './src/views');
+app.set('view engine', 'ejs');
+
 //initial get request
 app.get('/', (req, res)=>{
-    res.send('Express application loaded');
+    res.render('index', {title: 'Welcome to the TTRPG Home Page', 
+        data:['Dungeons & Dragons', 'Pathfinder', 'Warhammer']});
 });
 
-app.listen(3000, ()=>{
-    logger(`Express Server listening on port ${port}`);
+app.listen(port, ()=>{
+    logger(`Express Server listening on port ${chalk.green(port)}`);
 });
